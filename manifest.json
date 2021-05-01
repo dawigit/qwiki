@@ -1,0 +1,51 @@
+{
+
+  "manifest_version": 2,
+  "name": "__MSG_extensionName__",
+  "version": "0.0.6",
+  "applications": {
+    "gecko": {
+      "id": "qwiki-dev@online.de"
+    }
+  },
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
+  "developer": {
+    "name": "Daniel Wienzek",
+    "url": "https://github.com/dawigit/qwiki"
+  },
+
+
+  "icons": {
+    "128": "icons/quickwiki.png"
+  },
+
+  "permissions": [
+    "activeTab",
+    "*://*.wikipedia.org/*",
+    "*://*.wiktionary.org/*",
+    "storage"
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+			"exclude_matches": ["*://fritz.box/*"],
+      "js": ["content_scripts/quickwiki.js"]
+    }
+  ],
+
+  "options_ui": {
+    "page": "options.html"
+  },
+
+  "web_accessible_resources": [
+    "flags/*.png"
+  ]
+
+
+}

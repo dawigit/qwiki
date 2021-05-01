@@ -1,0 +1,29 @@
+{
+  "extensionName": {
+    "message": "qWiki",
+    "description": "Name der Erweiterung"
+  },
+
+  "extensionDescription": {
+    "message": "Schnelles Nachschalgen in Wikipedia mit ctrl/shift/alt + click",
+    "description": "Beschreibung der Erweiterung."
+  },
+
+  "optionsTitle": {
+    "message": "Einstellungen",
+    "description": ""
+  },
+
+  "optionsLanguage": {
+    "message": "Sprache",
+    "description": ""
+  },
+
+  "optionsC": {"message": "komplett","description": ""},
+  "optionsS": {"message": "kurz","description": ""},
+  "optionsT": {"message": "wikitable","description": ""},
+  "optionsQ": {"message": "schnellsuche","description": ""},
+  "optionsSave": {"message": "speichern","description": ""},
+  "optionsReset": {"message": "reset","description": ""}
+
+}

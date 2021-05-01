@@ -1,0 +1,29 @@
+{
+  "extensionName": {
+    "message": "qWiki",
+    "description": "Name of the extension"
+  },
+
+  "extensionDescription": {
+    "message": "Quick lookup in Wikipedia with ctrl/shift/alt + click",
+    "description": "Description of the extension."
+  },
+
+  "optionsTitle": {
+    "message": "Settings",
+    "description": ""
+  },
+
+  "optionsLanguage": {
+    "message": "Language",
+    "description": ""
+  },
+
+  "optionsC": {"message": "complete","description": ""},
+  "optionsS": {"message": "short","description": ""},
+  "optionsT": {"message": "wikitable","description": ""},
+  "optionsQ": {"message": "quicksearch","description": ""},
+  "optionsSave": {"message": "save","description": ""},
+  "optionsReset": {"message": "reset","description": ""}
+
+}

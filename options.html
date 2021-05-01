@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title id="oti"></title>
+    <style>
+      div.otable {
+        display: table;
+        border-collapse:collapse;
+        font-family: Calibri,X-LocaleSpecific,sans-serif;
+        font-weight: lighter;
+        font-size: 1rem;
+      }
+      div.otr {
+        display:table-row;
+      }
+      div.otc {
+        display:table-cell;
+        padding:5px;
+      }
+      label.l {
+        font-family: Calibri,X-LocaleSpecific,sans-serif;
+        font-weight: lighter;
+        font-size: 1.05em;
+      }
+      button.b {
+      }
+      div.in {
+        border:1px solid black;
+        width: auto;
+        height: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <form>
+      <div class="otable">
+        <div class="otr">
+          <div class="otc">
+            <label id="ollanguage" class="l"></label>
+          </div>
+          <div class="otc">
+            <select id="oselectlanguage" style="width: 64px"></select><img id="oimageflag" align="right"></img>
+          </div>
+        </div>
+        <div class="otr">
+          <div class="otc">
+            <label id="olcomplete" class="l"></label>
+          </div>
+          <div class="otc">
+            <div id="oinputcomplete" class="in"></div>
+          </div>
+        </div>
+        <div class="otr">
+          <div class="otc">
+            <label id="olshort" class="l"></label>
+          </div>
+          <div class="otc">
+            <div id="oinputshort" class="in"></div>
+          </div>
+        </div>
+        <div class="otr">
+          <div class="otc">
+            <label id="oltable" class="l"></label>
+          </div>
+          <div class="otc">
+            <div id="oinputtable" class="in"></div>
+          </div>
+        </div>
+        <div class="otr">
+          <div class="otc">
+            <label id="olquick" class="l"></label>
+          </div>
+          <div class="otc">
+            <input id="oinputquick" class="in"></input>
+          </div>
+        </div>
+        <div class="otr">
+          <div class="otc">
+            <button id="osavebutton" class="b" type="submit"></button>
+          </div>
+          <div class="otc">
+            <button id="oresetbutton" class="b"></button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <script src="options.js"></script>
+
+  </body>
+
+</html>
