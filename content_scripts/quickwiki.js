@@ -22,24 +22,24 @@ var method = 1;
 var wikisource = `href="https://${language}.${wwhat}${wiki}`;
 var bm,bl,bw;
 var html,content,short,multi;
-var box,boxsearch,search;
+var qwikibox,qwikiboxsearch,qwikisearch;
 window.addEventListener("keydown", keyaway, true);
 window.addEventListener("click", click, true);
 addGlobalStyle(".qwikiinfo { border-style: solid;border-width: 2px;border-radius: 6px;padding: 8px;position: fixed; display: none; width: "+window.innerWidth/1.5+"px; height:"+window.innerHeight/1.5+"px; background-color:rgba(230, 230, 230, 1); z-index:9999999; overflow-y:scroll;}");
-addGlobalStyle(".boxsearch { position: fixed; display: none; width: auto; height: auto; z-index:9999999;}");
+addGlobalStyle(".qwikiboxsearch { position: fixed; display: none; width: auto; height: auto; z-index:9999999;}");
 addGlobalStyle(".qwikisearch { display: inherit; border-style: solid;border-width: 2px;border-radius: 6px;padding: 8px;width: auto; height: auto;}");
-box = document.createElement("div");
-box.classList.add("qwikiinfo");
-document.body.appendChild(box);
-boxsearch = document.createElement("div");
-boxsearch.classList.add("boxsearch");
-boxsearch.style.width="168px";
-boxsearch.style.height="32px";
+qwikibox = document.createElement("div");
+qwikibox.classList.add("qwikiinfo");
+document.body.appendChild(qwikibox);
+qwikiboxsearch = document.createElement("div");
+qwikiboxsearch.classList.add("qwikiboxsearch");
+qwikiboxsearch.style.width="168px";
+qwikiboxsearch.style.height="32px";
 search = document.createElement("input");
 search.id="search";
 search.classList.add("qwikisearch");
-boxsearch.appendChild(search);
-document.body.appendChild(boxsearch);
+qwikiboxsearch.appendChild(search);
+document.body.appendChild(qwikiboxsearch);
 readOptions();
 browser.runtime.onMessage.addListener(request => {
   if(request.optionsupdate){
@@ -107,9 +107,9 @@ function click(e){
   et = e.target;
   while(1){
     if(et.parentElement){et = et.parentElement;}else{break;}
-    if(et == box)break;
+    if(et == qwikibox)break;
   }
-  if(et == box){
+  if(et == qwikibox){
     if(!method && e.button)return;
     if(e.target.tagName.toLowerCase() === 'audio')return true;
     if(e.target.tagName.toLowerCase() === 'a' && e.target.href.match(/(#.+)$/))st=e.target;
@@ -143,8 +143,8 @@ function click(e){
       //word = getFullWord(e);
 			word = window.getSelection().toString()
       console.log(`word=${word}`);
-      if(word.substr(-1).match(/(\W)/)){
-        word=word.substr(0,word.length-1);
+      if(word.slice(-1).match(/(\W)/)){
+        word=word.substring(0,word.length-1);
       }
   }else{
     if(e.button == 2 && e.shiftKey){
@@ -152,8 +152,8 @@ function click(e){
       e.stopPropagation();
     }
   }
-  if(box.style.display=="block" && e.button === 0){
-        box.style.display="none";
+  if(qwikibox.style.display=="block" && e.button === 0){
+        qwikibox.style.display="none";
       return false;
   }
   if(e.altKey == true){
@@ -166,7 +166,7 @@ function click(e){
 function wikisearch(e){
   if(!e){e=window.event;}
   if(e.key === "Enter" && e.target.value){
-      boxsearch.style.display="none";
+      qwikiboxsearch.style.display="none";
       let q = e.target.value.split(":").reverse();
       getContent(...q);
       //getContent(q[0],q[1]?q[1]:"",q[2]?q[2]:1,q[3]?q[3]:"");
@@ -176,23 +176,23 @@ function wikisearch(e){
 
 function keyaway(e){
     if(!e){e=window.event;}
-    if(box.style.display == "block" && e.key === "Escape"){
-        box.style.display = "none";
+    if(qwikibox.style.display == "block" && e.key === "Escape"){
+        qwikibox.style.display = "none";
     }
-    if(boxsearch.style.display=="block" && e.key === "Escape"){
-        boxsearch.style.display="none";
+    if(qwikiboxsearch.style.display=="block" && e.key === "Escape"){
+        qwikiboxsearch.style.display="none";
     }
     let ee = e;
     ee.button = -1;
     if(checkCombis(ee) == 4){
-        if(boxsearch.style.display=="block"){
-            boxsearch.style.display="none";
+        if(qwikiboxsearch.style.display=="block"){
+            qwikiboxsearch.style.display="none";
             return;
         }
-        boxsearch.style.left = window.innerWidth/2-parseInt(boxsearch.style.width)/2+"px";
-        boxsearch.style.top = window.innerHeight/2-parseInt(boxsearch.style.height)/2+"px";
+        qwikiboxsearch.style.left = window.innerWidth/2-parseInt(qwikiboxsearch.style.width)/2+"px";
+        qwikiboxsearch.style.top = window.innerHeight/2-parseInt(qwikiboxsearch.style.height)/2+"px";
         search.addEventListener("keyup",wikisearch,true);
-        boxsearch.style.display="block";
+        qwikiboxsearch.style.display="block";
         search.focus();
     }
 }
@@ -211,14 +211,14 @@ function handleResponse(response) {
   var method = response.method;
   if(html.getElementById("mw-content-text")){
     var content = html.getElementById("mw-content-text");
-    if(box.hasChildNodes()){
-        box.removeChild(box.firstChild);
+    if(qwikibox.hasChildNodes()){
+        qwikibox.removeChild(qwikibox.firstChild);
     }
     var i=0;
     if(method == 1){
-        box.appendChild(content);
-        box.style.width=window.innerWidth/1.5+"px";
-        box.style.height=window.innerHeight/1.5+"px";
+        qwikibox.appendChild(content);
+        qwikibox.style.width=window.innerWidth/1.5+"px";
+        qwikibox.style.height=window.innerHeight/1.5+"px";
     }
     if(method == 2){
         var p;
@@ -233,9 +233,9 @@ function handleResponse(response) {
           }
           p = content.children[i];
         }
-        box.appendChild(p);
-        box.style.width=window.innerWidth/3+"px";
-        box.style.height=window.innerHeight/2+"px";
+        qwikibox.appendChild(p);
+        qwikibox.style.width=window.innerWidth/3+"px";
+        qwikibox.style.height=window.innerHeight/2+"px";
     }
     if(method == 3){
         var t;
@@ -253,14 +253,14 @@ function handleResponse(response) {
           }
           t = content.children[i];
         }
-        box.appendChild(t);
-        box.style.width=window.innerWidth/3+"px";
-        box.style.height=window.innerHeight/1.5+"px";
+        qwikibox.appendChild(t);
+        qwikibox.style.width=window.innerWidth/3+"px";
+        qwikibox.style.height=window.innerHeight/1.5+"px";
     }
-    box.style.left = window.innerWidth/2-parseInt(box.style.width)/2+"px";
-    box.style.top = window.innerHeight/2-parseInt(box.style.height)/2+"px";
-    box.style.display = "block";
-    box.scrollTop = 0;
+    qwikibox.style.left = window.innerWidth/2-parseInt(qwikibox.style.width)/2+"px";
+    qwikibox.style.top = window.innerHeight/2-parseInt(qwikibox.style.height)/2+"px";
+    qwikibox.style.display = "block";
+    qwikibox.scrollTop = 0;
   }
 }
 
