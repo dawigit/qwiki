@@ -24,6 +24,7 @@
     "activeTab",
     "*://*.wikipedia.org/*",
     "*://*.wiktionary.org/*",
+    "*://*.wikimedia.org/*",
     "storage"
   ],
 
@@ -34,7 +35,7 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-			"exclude_matches": ["*://fritz.box/*"],
+      "exclude_matches": ["*://fritz.box/*"],
       "js": ["content_scripts/quickwiki.js"]
     }
   ],
