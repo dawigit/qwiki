@@ -11,11 +11,12 @@ document.querySelector("#oresetbutton").textContent=browser.i18n.getMessage("opt
 var flags = ["ar","bg","ca","cs","da","de","en","eo","es","et","eu","fa","fi","fr","he","hi","hr","hu","id","it","ja","kk","ko","lt","ms","nl","no","pl","pt","ro","ru","sk","sl","sr","sv","tr","uk","vi","war","zh"];
 var flag_urls = [];
 var select_language = document.querySelector("#oselectlanguage");
-var dcomb = [
-  ["oinputcomplete",[1,0,0,2,""]],
-  ["oinputshort",[0,1,0,2,""]],
-  ["oinputtable",[0,1,1,2,""]],
-  ["oinputquick",[1,0,0,-1,"w"]]
+
+var dcomb = [      //A C S [0=lmb,1=mmb,2=rmb]
+  ["oinputcomplete",[0,1,0,0,""]],
+  ["oinputshort",   [1,0,0,0,""]],
+  ["oinputtable",   [1,1,0,0,""]],
+  ["oinputquick",   [1,0,0,-1,"j"]]
 ];
 var comb = [];
 var combis_loaded = false;
@@ -28,7 +29,7 @@ for(let f in flags){
   o.style = `background-image:url(${flag_urls[f]});background-repeat: no-repeat; background-position: right;`;
   select_language.appendChild(o);
 }
-document.addEventListener("click",inputClick);
+document.addEventListener("mousedown",inputClick);
 document.addEventListener("DOMContentLoaded", restoreOptions);
 document.querySelector("#oinputquick").addEventListener("keydown", inputKey);
 select_language.addEventListener("change",changedLanguage);
@@ -36,6 +37,7 @@ select_language.addEventListener("change",changedLanguage);
 function inputKey(e){
   e.preventDefault();
   e.stopPropagation();
+  console.log(`ek: ${e.key} alt: ${e.altKey} ctrl: ${e.ctrlKey} shift: ${e.shiftKey}`);
   if(e.key == "Alt" || e.key == "Control" || e.key == "Shift" || e.key =="OS")return false;
   let nc = [e.target.id,[e.altKey?1:0,e.ctrlKey?1:0,e.shiftKey?1:0,-1,e.key?e.key:""]];
   if(nc[1][2] && !(nc[1][0] || nc[1][1]))return false;
@@ -123,6 +125,12 @@ function restoreOptions() {
     }else{
       language  = browser.i18n.getUILanguage();
     }
+    console.log(`raw lang=${language}`);
+    if(language.length>3){
+      language = language.substring(0,2);
+      browser.storage.local.set({ language: language });
+    }
+    console.log(`lang=${language}`);
     document.querySelector("#oselectlanguage").value = language;
     updateFlag(language);
   }
@@ -151,8 +159,19 @@ function restoreOptions() {
   function onError(error) {
     console.log(`Error: ${error}`);
   }
+
+  function onNoLang(error){
+    console.log("no lang!");
+    browser.storage.local.set({ language: "en" });
+    document.querySelector("#oselectlanguage").value = "en";
+    updateFlag("en");
+  }
+
   var getting_language = browser.storage.local.get("language");
-  getting_language.then(setLanguage, onError);
+  getting_language.then(setLanguage, onNoLang);
   var getting_combis = browser.storage.local.get("combis");
   getting_combis.then(setCombis, setCombisError);
 }
+
+
+

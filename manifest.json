@@ -2,10 +2,10 @@
 
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "applications": {
     "gecko": {
-      "id": "qwiki-dev@online.de"
+      "id": "qwiki@online.de"
     }
   },
   "description": "__MSG_extensionDescription__",
@@ -32,6 +32,16 @@
     "scripts": ["background.js"]
   },
 
+  "commands": {
+    "toggle-search": {
+      "suggested_key": {
+        "default": "Alt+W",
+        "linux": "Alt+W"
+      },
+      "description": "Toggle qWiki Search"
+    }
+  },
+
   "content_scripts": [
     {
       "matches": ["*://*/*"],
@@ -47,6 +57,4 @@
   "web_accessible_resources": [
     "flags/*.png"
   ]
-
-
 }

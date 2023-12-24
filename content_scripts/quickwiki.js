@@ -45,7 +45,52 @@ browser.runtime.onMessage.addListener(request => {
   if(request.optionsupdate){
     readOptions();
   }
+  if(request.togglesearch){
+    if(qwikiboxsearch.style.display=="block"){
+      qwikiboxsearch.style.display="none";
+      return;
+    } 
+    qwikiboxsearch.style.left = window.innerWidth/2-parseInt(qwikiboxsearch.style.width)/2+"px";
+    qwikiboxsearch.style.top = window.innerHeight/2-parseInt(qwikiboxsearch.style.height)/2+"px";
+    search.addEventListener("keyup",wikisearch,true);
+    qwikiboxsearch.style.display="block";
+    search.focus();
+  }
+  //console.log(request);
 });
+
+
+
+
+
+
+
+
+
+
+const commandName = 'toggle-search';
+
+/**
+ * Update the UI: set the value of the shortcut textbox.
+ */
+async function updateUI() {
+  let commands = await browser.commands.getAll();
+  for (let command of commands) {
+    if (command.name === commandName) {
+      if(qwikiboxsearch.style.display=="block"){
+        qwikiboxsearch.style.display="none";
+        return;
+      } 
+      qwikiboxsearch.style.left = window.innerWidth/2-parseInt(qwikiboxsearch.style.width)/2+"px";
+      qwikiboxsearch.style.top = window.innerHeight/2-parseInt(qwikiboxsearch.style.height)/2+"px";
+      search.addEventListener("keyup",wikisearch,true);
+      qwikiboxsearch.style.display="block";
+      search.focus();
+    }
+  }
+}
+//browser.commands.onCommand.addListener((command) => {
+
 
 
 function getContent(word){
@@ -100,10 +145,21 @@ function eventStop(e){
 
 
 function click(e){
-
-  //console.log('click');
   method = checkCombis(e);
-	let st,et;
+  //console.log(method);
+  var word;
+  if(e && e.rangeParent){
+    let s = e.rangeParent.textContent;
+    let slen = s.length;
+    let beg=e.rangeOffset;
+    let end=e.rangeOffset;
+    while(beg>0 && (s[beg-1]!=" "&&s[beg-1]!="\n") ){--beg;}
+    while(end<slen && (s[end]!=" "&&s[end]!="\n") ){++end;}
+    word = s.substring(beg,end);
+    //console.log(`word=${word}`);
+  }
+  
+  let st,et;
   et = e.target;
   while(1){
     if(et.parentElement){et = et.parentElement;}else{break;}
@@ -129,23 +185,14 @@ function click(e){
       return false;
     }
   }
-  var word;
-	word = window.getSelection().toString()
-	console.log(`word=${word}`);
-	if(word && e.altKey==true){
-		getContent(word,"",method);
-		return false;
-	}
-
+  
+  if(!word){ word = window.getSelection().toString(); }
+  
   if(method){
     e.preventDefault();
     e.stopPropagation();
-      //word = getFullWord(e);
-			word = window.getSelection().toString()
-      console.log(`word=${word}`);
-      if(word.slice(-1).match(/(\W)/)){
-        word=word.substring(0,word.length-1);
-      }
+    console.log(`word=${word}`);
+    getContent(word,"",method);
   }else{
     if(e.button == 2 && e.shiftKey){
       e.preventDefault();
@@ -156,15 +203,11 @@ function click(e){
         qwikibox.style.display="none";
       return false;
   }
-  if(e.altKey == true){
-    getContent(word,"",method);
-    return false;
-  }
   return 0;
 }
 
 function wikisearch(e){
-  if(!e){e=window.event;}
+  if(!e){return;}
   if(e.key === "Enter" && e.target.value){
       qwikiboxsearch.style.display="none";
       let q = e.target.value.split(":").reverse();
@@ -175,7 +218,7 @@ function wikisearch(e){
 }
 
 function keyaway(e){
-    if(!e){e=window.event;}
+    if(!e){return;}
     if(qwikibox.style.display == "block" && e.key === "Escape"){
         qwikibox.style.display = "none";
     }
@@ -273,6 +316,7 @@ function readOptions() {
     }
     wikisource = `href="https://${language}.wikipedia.org`;
   }
+
   function gotCombis(result){
     if(result.combis){
       comb=result.combis;
@@ -296,7 +340,6 @@ function addGlobalStyle(css) {
     head = document.getElementsByTagName('head')[0];
     if (!head) { return; }
     style = document.createElement('style');
-    style.type = 'text/css';
     if (style.styleSheet) style.styleSheet.cssText = css;
     else style.appendChild(document.createTextNode(css));
     head.appendChild(style);
