@@ -219,7 +219,6 @@ function wikisearch(e){
 
 function keyaway(e){
     if(!e){return;}
-    e.stopPropagation();
     if(qwikibox.style.display == "block" && e.key === "Escape"){
         qwikibox.style.display = "none";
     }
