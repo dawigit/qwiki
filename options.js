@@ -13,8 +13,8 @@ var flag_urls = [];
 var select_language = document.querySelector("#oselectlanguage");
 
 var dcomb = [      //A C S [0=lmb,1=mmb,2=rmb]
-  ["oinputcomplete",[0,1,0,0,""]],
-  ["oinputshort",   [1,0,0,0,""]],
+  ["oinputcomplete",[1,0,0,0,""]],
+  ["oinputshort",   [1,0,1,0,""]],
   ["oinputtable",   [1,1,0,0,""]],
   ["oinputquick",   [1,0,0,-1,"j"]]
 ];
@@ -22,7 +22,7 @@ var comb = [];
 var combis_loaded = false;
 
 for(let f in flags){
-  flag_urls[f] = browser.extension.getURL(`flags/${flags[f]}.png`);
+  flag_urls[f] = browser.runtime.getURL(`flags/${flags[f]}.png`);
   let o = document.createElement("option");
   o.value = flags[f];
   o.textContent = `   ${flags[f]}`;
@@ -79,7 +79,7 @@ function combiString(e){
 }
 
 function saveOptions(e) {
-  e.preventDefault();
+  if(e){e.preventDefault();}
   browser.storage.local.set({
     language: document.querySelector("#oselectlanguage").value
   });
@@ -90,10 +90,12 @@ function saveOptions(e) {
 }
 
 function defaultOptions(e){
-  e.preventDefault();
+  if(e){e.preventDefault();}
   comb = dcomb.slice();
-  updateGUI();
   browser.storage.local.set({combis: comb});
+  browser.storage.local.set({language: "en"});
+  updateGUI();
+  //browser.extension.getBackgroundPage().optionsUpdated();
 }
 
 function updateGUI(){
@@ -162,9 +164,8 @@ function restoreOptions() {
 
   function onNoLang(error){
     console.log("no lang!");
-    browser.storage.local.set({ language: "en" });
-    document.querySelector("#oselectlanguage").value = "en";
-    updateFlag("en");
+    defaultOptions();
+    saveOptions();
   }
 
   var getting_language = browser.storage.local.get("language");
