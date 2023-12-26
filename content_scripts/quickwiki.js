@@ -48,23 +48,31 @@ browser.runtime.onMessage.addListener(request => {
     readOptions();
   }
   if(request.togglesearch){
-    if(qwikiboxsearch.style.display=="block"){
-      qwikiboxsearch.style.display="none";
-      return;
-    } 
-    qwikiboxsearch.style.left = window.innerWidth/2-parseInt(qwikiboxsearch.style.width)/2+"px";
-    qwikiboxsearch.style.top = window.innerHeight/2-parseInt(qwikiboxsearch.style.height)/2+"px";
-    search.addEventListener("keyup",wikisearch,true);
-    qwikiboxsearch.style.display="block";
-    search.focus();
+    toggle_search();
   }
   //console.log(request);
 });
 
+qwikibox.addEventListener("scrollend", (event) => {
+  qwikibox_scroll_x = qwikibox.scrollLeft;
+  qwikibox_scroll_y = qwikibox.scrollTop;
+});
 
 
 
-
+function toggle_search(){
+  if(qwikiboxsearch.style.display=="block"){
+    qwikiboxsearch.style.display="none";
+    return;
+  } 
+  qwikiboxsearch.style.left = window.innerWidth/2-parseInt(qwikiboxsearch.style.width)/2+"px";
+  qwikiboxsearch.style.top = window.innerHeight/2-parseInt(qwikiboxsearch.style.height)/2+"px";
+  search.addEventListener("keyup",wikisearch,true);
+  qwikiboxsearch.style.display="block";
+  search.focus();
+  qwikibox_scroll_x = 0;
+  qwikibox_scroll_y = 0;
+}
 
 
 
@@ -79,15 +87,7 @@ async function updateUI() {
   let commands = await browser.commands.getAll();
   for (let command of commands) {
     if (command.name === commandName) {
-      if(qwikiboxsearch.style.display=="block"){
-        qwikiboxsearch.style.display="none";
-        return;
-      } 
-      qwikiboxsearch.style.left = window.innerWidth/2-parseInt(qwikiboxsearch.style.width)/2+"px";
-      qwikiboxsearch.style.top = window.innerHeight/2-parseInt(qwikiboxsearch.style.height)/2+"px";
-      search.addEventListener("keyup",wikisearch,true);
-      qwikiboxsearch.style.display="block";
-      search.focus();
+      toggle_search();
     }
   }
 }
@@ -98,6 +98,8 @@ async function updateUI() {
 function getContent(word){
   let l,m,w;
   if(!word)return;
+  qwikibox_scroll_x = 0;
+  qwikibox_scroll_y = 0;
   for(let i=1;i<arguments.length;i++){
     if(!arguments[i])continue;
     if(typeof(arguments[i]) == "string" && flags.includes(arguments[i])){l=arguments[i];continue;}
@@ -231,9 +233,10 @@ function keyaway(e){
     ee.button = -1;
     if(qwikibox.style.display!="none"){
       //console.log(`ee.key = ${ee.key}`);
+      //console.log(`${qwikibox_scroll_x} ${qwikibox_scroll_y}`);
       if(ee.key == "ArrowDown"){
         //console.log("Down");
-        if(qwikibox.scrollTop < qwikibox.scrollHeight){        
+        if(qwikibox_scroll_y < qwikibox.scrollTopMax){        
           qwikibox_scroll_y+=100;      
           qwikibox.scroll({
             top: qwikibox_scroll_y,
@@ -246,7 +249,7 @@ function keyaway(e){
       }
       if(ee.key == "ArrowUp"){
         //console.log("Up");
-        if(qwikibox.scrollTop > 0){        
+        if(qwikibox_scroll_y > 0){        
           qwikibox_scroll_y-=100; 
           qwikibox.scroll({
             top: qwikibox_scroll_y,
@@ -260,7 +263,7 @@ function keyaway(e){
 
       if(ee.key == "ArrowLeft"){
         //console.log("Left");
-        if(qwikibox.scrollLeft > 0){        
+        if(qwikibox_scroll_x > 0){        
           qwikibox_scroll_x-=100;      
           qwikibox.scroll({
             top: qwikibox_scroll_y,
@@ -273,7 +276,7 @@ function keyaway(e){
       }
       if(ee.key == "ArrowRight"){
         //console.log("Right");
-        if(qwikibox.scrollLeft < qwikibox.scrollWidth){        
+        if(qwikibox_scroll_x < qwikibox.scrollLeftMax){        
           qwikibox_scroll_x+=100; 
           qwikibox.scroll({
             top: qwikibox_scroll_y,
@@ -287,15 +290,7 @@ function keyaway(e){
     }
     
     if(checkCombis(ee) == 4){
-        if(qwikiboxsearch.style.display=="block"){
-            qwikiboxsearch.style.display="none";
-            return;
-        }
-        qwikiboxsearch.style.left = window.innerWidth/2-parseInt(qwikiboxsearch.style.width)/2+"px";
-        qwikiboxsearch.style.top = window.innerHeight/2-parseInt(qwikiboxsearch.style.height)/2+"px";
-        search.addEventListener("keyup",wikisearch,true);
-        qwikiboxsearch.style.display="block";
-        search.focus();
+        toggle_search();
     }
 }
 
