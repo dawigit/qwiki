@@ -23,6 +23,7 @@ var wikisource = `href="https://${language}.${wwhat}${wiki}`;
 var bm,bl,bw;
 var html,content,short,multi;
 var qwikibox,qwikiboxsearch,qwikisearch;
+var qwikibox_scroll_x = 0;
 var qwikibox_scroll_y = 0;
 window.addEventListener("keydown", keyaway, true);
 window.addEventListener("click", click, true);
@@ -229,13 +230,14 @@ function keyaway(e){
     let ee = e;
     ee.button = -1;
     if(qwikibox.style.display!="none"){
+      //console.log(`ee.key = ${ee.key}`);
       if(ee.key == "ArrowDown"){
         //console.log("Down");
         if(qwikibox.scrollTop < qwikibox.scrollHeight){        
           qwikibox_scroll_y+=100;      
           qwikibox.scroll({
             top: qwikibox_scroll_y,
-            left: 100,
+            left: qwikibox_scroll_x,
             behavior: "smooth"
           });
           ee.preventDefault();
@@ -248,7 +250,34 @@ function keyaway(e){
           qwikibox_scroll_y-=100; 
           qwikibox.scroll({
             top: qwikibox_scroll_y,
-            left: 100,
+            left: qwikibox_scroll_x,
+            behavior: "smooth"
+          });
+          ee.preventDefault();
+          ee.stopPropagation();
+        }
+      }
+
+      if(ee.key == "ArrowLeft"){
+        //console.log("Left");
+        if(qwikibox.scrollLeft > 0){        
+          qwikibox_scroll_x-=100;      
+          qwikibox.scroll({
+            top: qwikibox_scroll_y,
+            left: qwikibox_scroll_x,
+            behavior: "smooth"
+          });
+          ee.preventDefault();
+          ee.stopPropagation();
+        }
+      }
+      if(ee.key == "ArrowRight"){
+        //console.log("Right");
+        if(qwikibox.scrollLeft < qwikibox.scrollWidth){        
+          qwikibox_scroll_x+=100; 
+          qwikibox.scroll({
+            top: qwikibox_scroll_y,
+            left: qwikibox_scroll_x,
             behavior: "smooth"
           });
           ee.preventDefault();
