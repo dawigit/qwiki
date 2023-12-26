@@ -23,6 +23,7 @@ var wikisource = `href="https://${language}.${wwhat}${wiki}`;
 var bm,bl,bw;
 var html,content,short,multi;
 var qwikibox,qwikiboxsearch,qwikisearch;
+var qwikibox_scroll_y = 0;
 window.addEventListener("keydown", keyaway, true);
 window.addEventListener("click", click, true);
 addGlobalStyle(".qwikiinfo { border-style: solid;border-width: 2px;border-radius: 6px;padding: 8px;position: fixed; display: none; width: "+window.innerWidth/1.5+"px; height:"+window.innerHeight/1.5+"px; background-color:rgba(230, 230, 230, 1); z-index:9999999; overflow-y:scroll;}");
@@ -227,6 +228,35 @@ function keyaway(e){
     }
     let ee = e;
     ee.button = -1;
+    if(qwikibox.style.display!="none"){
+      if(ee.key == "ArrowDown"){
+        //console.log("Down");
+        if(qwikibox.scrollTop < qwikibox.scrollHeight){        
+          qwikibox_scroll_y+=100;      
+          qwikibox.scroll({
+            top: qwikibox_scroll_y,
+            left: 100,
+            behavior: "smooth"
+          });
+          ee.preventDefault();
+          ee.stopPropagation();
+        }
+      }
+      if(ee.key == "ArrowUp"){
+        //console.log("Up");
+        if(qwikibox.scrollTop > 0){        
+          qwikibox_scroll_y-=100; 
+          qwikibox.scroll({
+            top: qwikibox_scroll_y,
+            left: 100,
+            behavior: "smooth"
+          });
+          ee.preventDefault();
+          ee.stopPropagation();
+        }
+      }
+    }
+    
     if(checkCombis(ee) == 4){
         if(qwikiboxsearch.style.display=="block"){
             qwikiboxsearch.style.display="none";

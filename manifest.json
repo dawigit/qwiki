@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "__MSG_extensionName__",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "browser_specific_settings": {
     "gecko": {
       "id": "qwiki@online.de"
