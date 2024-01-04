@@ -1,6 +1,6 @@
 # qWiki
 
-### one-click wikipedia lookup 
+### one-click Wikipedia lookup 
 
 
 ![qwiki](https://github.com/dawigit/qwiki/assets/26333559/fc6302f4-4249-45bb-bad3-23066599a550)
@@ -14,7 +14,7 @@ https://addons.mozilla.org/en-US/firefox/addon/qwiki/
 
 ## Usage
 
-`alt+lmb` (alt key pressed + left mouse button) searches for the **full** wikipedia article of the 'clicked' word (in your default language)
+`alt+lmb` (alt key pressed + left mouse button) searches for the **full** Wikipedia article of the 'clicked' word (in your default language)
 
 `alt+shift+lmb` for the **short** article (just a small part of the **full**)
 
@@ -25,11 +25,11 @@ https://addons.mozilla.org/en-US/firefox/addon/qwiki/
 
 `alt+w` shows/hides the search input box
 
-"USA" searches for the wikipedia article 'USA' in your default language
+"USA" searches for the Wikipedia article 'USA' in your default language
 
-"de:USA" searches for the wikipedia article 'USA' in german
+"de:USA" searches for the Wikipedia article 'USA' in german
 
-"ru:USA" searches for the wikipedia article 'USA' in russian
+"ru:USA" searches for the Wikipedia article 'USA' in russian
 
 "de:2:USA" searches… and displays the short version
 
@@ -41,7 +41,7 @@ https://addons.mozilla.org/en-US/firefox/addon/qwiki/
 
 "de:?:Himmel" searches **wiktionary.org** for the german article about the word 'Himmel' (english: sky)
 
-"pl:piorun" searches the polish wikipedia for 'piorun'
+"pl:piorun" searches the polish Wikipedia for 'piorun'
 
 
 
